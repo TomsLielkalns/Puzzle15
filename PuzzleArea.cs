@@ -12,11 +12,15 @@ namespace Puzzle15
 {
     public partial class PuzzleArea : Form
     {
+        Random rand = new Random();
+        List<Point> initialLocations = new List<Point>();
+
         public PuzzleArea()
         {
             InitializeComponent();
             InitializePuzzleArea();
             InitializeBlock();
+            ShuffleBlocks();
         }
 
         private void InitializePuzzleArea()
@@ -44,6 +48,7 @@ namespace Puzzle15
 
                     //block.Click += new EventHandler(Block_Click);
                     block.Click += Block_Click;
+                    initialLocations.Add(block.Location);
 
                     if (blockCount == 16)
                     {
@@ -65,6 +70,7 @@ namespace Puzzle15
             if (CheckIfAdjacent(block))
             {
                 SwapBlock(block);
+                CheckForWin();
             }
         }
 
@@ -94,6 +100,48 @@ namespace Puzzle15
             {
                 return false;
             }
+        }
+
+        private void ShuffleBlocks()
+        {
+            int randNumber;
+            string blockName;
+            Button block;
+
+            for(int i = 0; i < 100; i++)
+            {
+                randNumber = rand.Next(1, 16);
+                blockName = "Block" + randNumber.ToString();
+                block = (Button)this.Controls[blockName];
+                SwapBlock(block);
+            }
+        }
+
+        private void resetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShuffleBlocks();
+        }
+
+        private void CheckForWin()
+        {
+            string blockName;
+            Button block;
+
+            for(int i = 1; i < 16; i++)
+            {
+                blockName = "Block" + i.ToString();
+                block = (Button)this.Controls[blockName];
+                if(block.Location != initialLocations[i - 1])
+                {
+                    return;
+                }
+            }
+            PuzzleSolved();
+        }
+
+        private void PuzzleSolved()
+        {
+            MessageBox.Show("You solved the puzzle!");
         }
     }
 }
