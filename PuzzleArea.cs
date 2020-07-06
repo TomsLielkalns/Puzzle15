@@ -143,5 +143,10 @@ namespace Puzzle15
         {
             MessageBox.Show("You solved the puzzle!");
         }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
