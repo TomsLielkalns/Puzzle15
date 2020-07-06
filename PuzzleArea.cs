@@ -143,5 +143,6 @@ namespace Puzzle15
         {
             MessageBox.Show("You solved the puzzle!");
         }
+
     }
 }
